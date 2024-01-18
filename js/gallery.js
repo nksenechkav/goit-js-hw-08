@@ -65,45 +65,19 @@ const images = [
   ];
 
   const galleryContainer = document.querySelector('.gallery');
-
   const galleryItemsMarkup = images.map(({ preview, original, description }) => {
-  return `<li class="gallery-item">
-            <a class="gallery-link" href="${original}">
-              <img
-                class="gallery-image"
-                src="${preview}"
-                data-source="${original}"
-                alt="${description}"
-              />
-            </a>
-          </li>`;
+    return `<li class="gallery-item">
+              <a class="gallery-link" href="${original}">
+                <img
+                  class="gallery-image"
+                  src="${preview}"
+                  data-source="${original}"
+                  alt="${description}"
+                  onclick="event.preventDefault(); 
+                  console.log('${original}');"
+                />
+              </a>
+            </li>`;
   }).join('');
-
-galleryContainer.insertAdjacentHTML('beforeend', galleryItemsMarkup);
-
-galleryContainer.addEventListener("click", selectImage);
-
-
-// // This is where delegation «magic» happens
-// function selectImage(event) {
-//   if (event.target.nodeName !== "BUTTON") {
-//     return;
-//   }
-//   const selectedImage = event.target.dataset.image;
-//   output.textContent = `${selectedImage}`;
-//   output.style.image = selectedImage;
-// }
-
-// function createGalleryModal() {
-//     const items = [];
-//     for (let i = 0; i < 60; i++) {
-//       const image = selectImage;
-//       const item = document.createElement("button");
-//       item.type = "button";
-//       item.dataset.color = color;
-//       item.style.backgroundColor = color;
-//       item.classList.add("item");
-//       items.push(item);
-//     }
-//     colorPalette.append(...items);
-//   }
+  
+  galleryContainer.innerHTML = galleryItemsMarkup;
