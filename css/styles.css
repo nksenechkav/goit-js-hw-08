@@ -34,10 +34,13 @@
   .gallery-image {
     width: 360px;
     height: 200px;
+    object-fit: cover;
+    cursor: pointer;
   }  
 
-  .gallery .gallery-item:hover {
+  .gallery-item:hover {
     transform: scale(1.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   }
 
   .selectedImage {

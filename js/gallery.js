@@ -65,35 +65,23 @@ const images = [
   ];
 
   const galleryContainer = document.querySelector('.gallery');
+    
+    galleryContainer.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (event.target.classList.contains("gallery-image")) {
+        const image = images.find(
+          (img) => img.preview === event.target.src
+        );
+        openModal(image.original);
+      }
+    });
   
 
-  galleryContainer.addEventListener('click', e => {
-    e.preventDefault();
-    // if (e.target.nodeName !== 'IMG') return;
-    if (e.target === e.currentTarget) return;
-  
-    // const liElem = e.target.closest('li');
-    // const description = liElem.dataset.description;
-    // const image = images.find(el => el.description === description);
-  
-    showImageModal(image);
-  });
-  
+    
+  function openModal(originalImage) {
 
-  function showImageModal(image) {
-
-  const {original, description} = image;
-
-    const modal = basicLightbox.create(
-      `
-        <div class="modal box">
-        <img
-        class="gallery-image"
-        src="${original}"
-        data-source="${original}"
-        alt="${description}"
-        />
-        </div>
+  const instance = basicLightbox.create(
+    `<img src="${originalImage}">
     `,
       {
         onShow: instance => {
@@ -107,19 +95,20 @@ const images = [
       },
     );
   
-    modal.show();
+    instance.show();
 
     function onModalClose(e) {
       console.log(e.code);
       if (e.code === 'Escape') {
-        modal.close();
+        instance.close();
       }
     }
+    
   }
   
 
 
-function imagesGallery () {
+function createImagesGallery () {
 const galleryItemsMarkup = images.map(({ preview, original, description}) => {
   return `<li class="gallery-item">
             <a class="gallery-link" href="${original}">
@@ -137,4 +126,4 @@ galleryContainer.innerHTML = galleryItemsMarkup;
 
 }
 
-imagesGallery ();
+createImagesGallery ();
