@@ -42,8 +42,3 @@
     transform: scale(1.1);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   }
-
-  .selectedImage {
-    width: 1112px;
-    height: 640px;
-  }
