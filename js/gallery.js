@@ -65,19 +65,76 @@ const images = [
   ];
 
   const galleryContainer = document.querySelector('.gallery');
-  const galleryItemsMarkup = images.map(({ preview, original, description }) => {
-    return `<li class="gallery-item">
-              <a class="gallery-link" href="${original}">
-                <img
-                  class="gallery-image"
-                  src="${preview}"
-                  data-source="${original}"
-                  alt="${description}"
-                  onclick="event.preventDefault(); 
-                  console.log('${original}');"
-                />
-              </a>
-            </li>`;
-  }).join('');
   
-  galleryContainer.innerHTML = galleryItemsMarkup;
+
+  galleryContainer.addEventListener('click', e => {
+    e.preventDefault();
+    // if (e.target.nodeName !== 'IMG') return;
+    if (e.target === e.currentTarget) return;
+  
+    // const liElem = e.target.closest('li');
+    // const description = liElem.dataset.description;
+    // const image = images.find(el => el.description === description);
+  
+    showImageModal(image);
+  });
+  
+
+  function showImageModal(image) {
+
+  const {original, description} = image;
+
+    const modal = basicLightbox.create(
+      `
+        <div class="modal box">
+        <img
+        class="gallery-image"
+        src="${original}"
+        data-source="${original}"
+        alt="${description}"
+        />
+        </div>
+    `,
+      {
+        onShow: instance => {
+          console.log('ADD LISTENER');
+          document.addEventListener('keydown', onModalClose);
+        },
+        onClose: instance => {
+          console.log('REMOVE LISTENER');
+          document.removeEventListener('keydown', onModalClose);
+        },
+      },
+    );
+  
+    modal.show();
+
+    function onModalClose(e) {
+      console.log(e.code);
+      if (e.code === 'Escape') {
+        modal.close();
+      }
+    }
+  }
+  
+
+
+function imagesGallery () {
+const galleryItemsMarkup = images.map(({ preview, original, description}) => {
+  return `<li class="gallery-item">
+            <a class="gallery-link" href="${original}">
+              <img
+                class="gallery-image"
+                src="${preview}"
+                data-source="${original}"
+                alt="${description}"
+              />
+            </a>
+          </li>`;
+}).join('\n');
+
+galleryContainer.innerHTML = galleryItemsMarkup;
+
+}
+
+imagesGallery ();
