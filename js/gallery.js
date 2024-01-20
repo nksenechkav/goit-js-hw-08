@@ -65,10 +65,42 @@ const images = [
   ];
 
 const galleryContainer = document.querySelector('.gallery');
-    
-function openModal(originalImage) {
 
-  const instance = basicLightbox.create(
+let instance;
+
+function createImagesGallery () {
+  const galleryItemsMarkup = images.map(({ preview, original, description}) => {
+    return `<li class="gallery-item">
+            <a class="gallery-link" href="${original}">
+              <img
+                class="gallery-image"
+                src="${preview}"
+                data-source="${original}"
+                alt="${description}"
+              />
+            </a>
+          </li>`;
+}).join('\n');
+
+  galleryContainer.innerHTML = galleryItemsMarkup;
+
+  galleryContainer.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (event.target.classList.contains("gallery-image")) {
+    const image = images.find(
+      (img) => img.preview === event.target.src
+    );
+      openModal(image.original);
+    }
+});
+
+}
+
+createImagesGallery();
+
+
+function openModal(originalImage) {
+  instance = basicLightbox.create(
     `<img src="${originalImage}">
     `,
       {
@@ -82,44 +114,16 @@ function openModal(originalImage) {
         },
       },
     );
-  
     instance.show();  
-
-    function onModalClose(e) {
-      console.log(e.code);
-      if (e.code === 'Escape') {
-        instance.close();
-      }
-    }
 }
 
 
-function createImagesGallery () {
-const galleryItemsMarkup = images.map(({ preview, original, description}) => {
-  return `<li class="gallery-item">
-            <a class="gallery-link" href="${original}">
-              <img
-                class="gallery-image"
-                src="${preview}"
-                data-source="${original}"
-                alt="${description}"
-              />
-            </a>
-          </li>`;
-}).join('\n');
-
-galleryContainer.innerHTML = galleryItemsMarkup;
-
-galleryContainer.addEventListener("click", (event) => {
-  event.preventDefault();
-  if (event.target.classList.contains("gallery-image")) {
-    const image = images.find(
-      (img) => img.preview === event.target.src
-    );
-    openModal(image.original);
+function onModalClose(e) {
+  console.log(e.code);
+  if (e.code === 'Escape') {
+    instance.close();
   }
-});
-
 }
 
-createImagesGallery ();
+
+
