@@ -64,38 +64,26 @@ const images = [
     },
   ];
 
-  const galleryContainer = document.querySelector('.gallery');
+const galleryContainer = document.querySelector('.gallery');
     
-    galleryContainer.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (event.target.classList.contains("gallery-image")) {
-        const image = images.find(
-          (img) => img.preview === event.target.src
-        );
-        openModal(image.original);
-      }
-    });
-  
-
-    
-  function openModal(originalImage) {
+function openModal(originalImage) {
 
   const instance = basicLightbox.create(
     `<img src="${originalImage}">
     `,
       {
-        onShow: instance => {
+        onShow: (instance) => {
           console.log('ADD LISTENER');
           document.addEventListener('keydown', onModalClose);
         },
-        onClose: instance => {
+        onClose: (instance) => {
           console.log('REMOVE LISTENER');
           document.removeEventListener('keydown', onModalClose);
         },
       },
     );
   
-    instance.show();
+    instance.show();  
 
     function onModalClose(e) {
       console.log(e.code);
@@ -103,9 +91,7 @@ const images = [
         instance.close();
       }
     }
-    
-  }
-  
+}
 
 
 function createImagesGallery () {
@@ -123,6 +109,16 @@ const galleryItemsMarkup = images.map(({ preview, original, description}) => {
 }).join('\n');
 
 galleryContainer.innerHTML = galleryItemsMarkup;
+
+galleryContainer.addEventListener("click", (event) => {
+  event.preventDefault();
+  if (event.target.classList.contains("gallery-image")) {
+    const image = images.find(
+      (img) => img.preview === event.target.src
+    );
+    openModal(image.original);
+  }
+});
 
 }
 
